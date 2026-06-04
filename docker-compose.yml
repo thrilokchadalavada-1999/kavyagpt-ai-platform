@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: kavyagpt-backend
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build: ./frontend
+    container_name: kavyagpt-frontend
+    ports:
+      - "5174:5174"
+    depends_on:
+      - backend
