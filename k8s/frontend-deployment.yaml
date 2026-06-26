@@ -22,9 +22,9 @@ spec:
       containers:
         - name: frontend
 
-          image: kavyagpt-frontend
+          image: kavya1111999/kavyagpt-frontend:v1
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 80

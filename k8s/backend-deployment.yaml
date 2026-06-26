@@ -3,6 +3,7 @@ kind: Deployment
 
 metadata:
   name: kavyagpt-backend
+  namespace: kavyagpt
 
 spec:
   replicas: 1
@@ -12,19 +13,59 @@ spec:
       app: backend
 
   template:
-
     metadata:
       labels:
         app: backend
 
     spec:
-
       containers:
         - name: backend
 
-          image: kavyagpt-backend
+          image: kavya1111999/kavyagpt-backend:v2
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
+
+          env:
+            - name: OLLAMA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: kavyagpt-config
+                  key: OLLAMA_HOST
+
+            - name: OLLAMA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: kavyagpt-config
+                  key: OLLAMA_PORT
+
+            - name: MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: kavyagpt-config
+                  key: MODEL_NAME
 
           ports:
-            - containerPort: 8000
+            - containerPort: 9000
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
