@@ -1,38 +1,17 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 
 metadata:
-  name: kavyagpt-frontend
+  name: backend-service
   namespace: kavyagpt
 
 spec:
-  replicas: 1
-
   selector:
-    matchLabels:
-      app: frontend
+    app: backend
 
-  template:
-    metadata:
-      labels:
-        app: frontend
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
 
-    spec:
-      containers:
-        - name: frontend
-
-          image: kavya1111999/kavyagpt-frontend:v1
-
-          imagePullPolicy: Always
-
-          ports:
-            - containerPort: 80
-
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
+  type: NodePort
